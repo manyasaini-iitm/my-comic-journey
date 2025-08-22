@@ -2,41 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Comic-inspired design system with warm, playful colors */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Comic book inspired colors */
+    --background: 45 25% 95%; /* Warm cream background */
+    --foreground: 25 20% 15%; /* Dark brown text */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 45 30% 98%; /* Light cream cards */
+    --card-foreground: 25 20% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 45 30% 98%;
+    --popover-foreground: 25 20% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Comic yellow primary */
+    --primary: 45 95% 55%; /* Bright comic yellow */
+    --primary-foreground: 25 30% 10%; /* Dark text on yellow */
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Comic panel colors */
+    --secondary: 45 15% 88%; /* Soft beige */
+    --secondary-foreground: 25 20% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 45 20% 90%;
+    --muted-foreground: 25 15% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 35 85% 60%; /* Orange accent */
+    --accent-foreground: 25 30% 10%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 45 25% 95%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 45 20% 85%; /* Soft borders */
+    --input: 45 25% 92%;
+    --ring: 45 95% 55%;
 
-    --radius: 0.5rem;
+    /* Comic speech bubble */
+    --bubble: 0 0% 100%;
+    --bubble-foreground: 25 20% 15%;
+
+    /* Comic panel shadow */
+    --panel-shadow: 25 30% 10%;
+
+    --radius: 1rem; /* Rounder for comic feel */
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +108,135 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+@layer components {
+  /* Comic panel styles */
+  .comic-panel {
+    @apply bg-card border-4 border-foreground rounded-2xl p-6 shadow-lg relative;
+    box-shadow: 6px 6px 0px hsl(var(--panel-shadow));
+  }
+
+  .comic-panel::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: hsl(var(--foreground));
+    border-radius: 1rem;
+    z-index: -1;
+  }
+
+  /* Speech bubble */
+  .speech-bubble {
+    @apply bg-bubble text-bubble-foreground border-2 border-foreground rounded-2xl p-4 relative;
+    box-shadow: 3px 3px 0px hsl(var(--panel-shadow));
+  }
+
+  .speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 30px;
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 15px solid hsl(var(--bubble));
+  }
+
+  .speech-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -18px;
+    left: 28px;
+    width: 0;
+    height: 0;
+    border-left: 17px solid transparent;
+    border-right: 17px solid transparent;
+    border-top: 17px solid hsl(var(--foreground));
+  }
+
+  /* Comic text styles */
+  .comic-title {
+    @apply text-4xl md:text-6xl font-black text-foreground;
+    text-shadow: 3px 3px 0px hsl(var(--primary));
+    letter-spacing: -0.02em;
+  }
+
+  .comic-subtitle {
+    @apply text-xl md:text-2xl font-bold text-accent;
+    text-shadow: 2px 2px 0px hsl(var(--foreground));
+  }
+
+  /* Animations */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes bounce-in {
+    0% { 
+      transform: scale(0.3) rotate(-10deg);
+      opacity: 0;
+    }
+    50% { 
+      transform: scale(1.05) rotate(5deg);
+    }
+    70% { 
+      transform: scale(0.9) rotate(-2deg);
+    }
+    100% { 
+      transform: scale(1) rotate(0deg);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-in-left {
+    0% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-in-right {
+    0% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-bounce-in {
+    animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .animate-slide-in-left {
+    animation: slide-in-left 0.8s ease-out;
+  }
+
+  .animate-slide-in-right {
+    animation: slide-in-right 0.8s ease-out;
+  }
+
+  /* Interactive hover effects */
+  .hover-comic:hover {
+    transform: scale(1.02) rotate(1deg);
+    transition: transform 0.3s ease;
   }
 }
